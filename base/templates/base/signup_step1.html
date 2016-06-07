@@ -1,0 +1,28 @@
+{% extends "base/base.html" %}
+{% load rpx %}
+
+{% block bodyid %}signup-step1{% endblock %}
+
+{% block title %}Step 1: Login - suppleText{% endblock %}
+
+{% comment %}
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+    </script>
+{% endblock %}
+{% endcomment %}
+
+{% block content %}
+
+<h2 id="catchphrase">Step 1 of 2: Login</h2>
+<p id="catchphrase-helper">
+    You are almost at your suppleText wiki! Please login first.
+</p>
+
+{% rpx_embed extra %}
+
+{% endblock %}
+

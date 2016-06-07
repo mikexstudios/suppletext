@@ -1,0 +1,98 @@
+{% load pretty_date %}
+{% load rev_short_id %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{% block title %}suppletext{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link href="{{ wiki_media_path }}/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="{{ wiki_media_path }}/css/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+        <link href="{{ wiki_media_path }}/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+
+    {% block extracss %}{% endblock %}
+
+    {% block javascript %}
+    {% endblock %}
+</head>
+
+<body id="{% block bodyid %}{% endblock %}">
+
+{% block errors %}
+{% if form.errors %}
+<div id="errors">
+    Please correct the error{{form.errors|pluralize}} below.
+</div>
+{% endif %}
+{% endblock %}
+
+{% block beforecontainer %}{% endblock %}
+
+<div id="container">
+
+{% include 'snippets/userbox.html' %}
+    
+<div id="header">
+{% block header %}
+    <h1><a href="{% url home %}">{{ wiki.name }}</a></h1>
+    <p>{{ wiki.tagline }}</p>
+{% endblock %}
+</div>
+
+<div id="content">
+
+{% if messages %}
+<div id="messages">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+
+<div id="page_actions">
+{% block page_actions %}
+{% if page %}
+    {# Decided to keep this link constant and handle lack of perm on separate page. #}
+    {% if rev %}
+    <a href="{% url edit page.tag page.id|rev_short_id %}">edit this revision</a> 
+    {% else %}
+    <a href="{% url edit page.tag %}">edit this page</a> 
+    {% endif %}
+
+    {% if not user.is_active %}
+    | <a href="{% url auth_login %}?next=http://{{ request.get_host }}{{ request.path }}">login</a> 
+    {% endif %}
+
+    {# A history doesn't exist for "global" pages. So we'll hide it. #}
+    {% if page.created %}
+    | <a href="{% url history page.tag %}" title="Click to view page edit history">{{ page.created|pretty_date:"F nS, Y @ P" }}</a>
+    {% endif %}
+{% endif %}
+{% endblock %}
+</div>
+
+</div>
+
+{% block aftercontent %}{% endblock %}
+
+<div id="footer">
+{% block footer %}
+    <a href="http://{{ request.base_domain }}">powered by suppleText</a>
+{% endblock %}
+</div>
+
+</div> <!-- container -->
+
+{% block bodyend %}{% endblock %}
+
+</body>
+</html>

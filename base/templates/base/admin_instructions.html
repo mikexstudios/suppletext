@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+{% load rpx %}
+
+{% block bodyid %}wiki-admin-instructions{% endblock %}
+
+{% block title %}How to access wiki admin - suppleText{% endblock %}
+
+{% comment %}
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+    </script>
+{% endblock %}
+{% endcomment %}
+
+{% block content %}
+
+<h2 id="catchphrase">How to access wiki admin</h2>
+<p id="catchphrase-helper">
+    <strong>Visit the wiki that you have administrator privileges on</strong>.
+    Make sure you are logged in. Then click the <em>Wiki Admin</em> link at the
+    top right corner of the page.
+
+    <img src="{{ base_media_path }}/images/wiki_admin_link_screenshot.png" />
+</p>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{% block title %}Settings{% endblock %} - {{ wiki.name|default:"My Wiki" }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link href="{{ wiki_admin_media_path }}/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="{{ wiki_admin_media_path }}/css/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+        <link href="{{ base_media_path }}/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+
+    {% block extracss %}{% endblock %}
+
+    {% block javascript %}{% endblock %}
+    
+    {% block extrahead %}{% endblock %}
+</head>
+
+<body id="{% block bodyid %}{% endblock %}">
+
+{% block errors %}
+{% if form.errors %}
+<div id="errors">
+    Please correct the error{{form.errors|pluralize }} below.
+</div>
+{% endif %}
+{% endblock %}
+
+<div id="container">
+
+{# This is duplicated in wiki's base file #}
+{% block userbox %}
+{% if user.is_authenticated and user.is_active %}
+<div id="userbox">
+    <div class="wrapper">
+        <ul>
+            <li id="user" class="first"><a href="{% url user-profile user.username %}">{{ user.username }}</a></li>
+            <!--<li><a href="">Dashboard</a></li>-->
+            <li><a href="{% url auth_logout %}">Logout</a></li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+    
+<div id="header">
+{% block header %}
+    <h1><a href="{% url home %}">{{ wiki.name|default:"My Wiki" }}</a></h1>
+    <p>(<a href="{% url home %}">View site &raquo;</a>)</p>
+{% endblock %}
+</div>
+
+<div id="navigation">
+    <div id="admin-menu">
+        <ul>
+            <!--
+            {% block nav-dashboard %}<li><a href="">Dashboard</a></li>{% endblock %}
+            {% block nav-presentation %}<li><a href="">Presentation</a></li>{% endblock %}
+            {% block nav-plugins %}<li><a href="">Plugins</a></li>{% endblock %}
+            -->
+            {% block nav-settings %}<li><a href="{% url wiki-admin-settings %}">Settings</a></li>{% endblock %}
+            {% block nav-users %}<li><a href="{% url wiki-admin-users %}">Users</a></li>{% endblock %}
+            <!-- {% block nav-support %}<li><a href="http://www.getsatisfaction.com/suppletext">Support</a></li>{% endblock %} -->
+        </ul>
+    </div>
+</div>
+
+<div id="content">
+
+{% if messages %}
+<div id="messages">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% block content %}
+{% endblock %}
+</div>
+
+<div id="footer">
+{% block footer %}
+    a product of <a href="http://www.supplelabs.com">supple labs</a>
+{% endblock %}
+</div>
+
+</div> <!-- container -->
+
+{% block bodyend %}{% endblock %}
+
+<!-- Get Satisfaction widget -->
+<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";  
+  feedback_widget_options.company = "suppletext";
+  feedback_widget_options.placement = "left";
+  feedback_widget_options.color = "#222";
+  feedback_widget_options.style = "idea";
+
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+
+</body>
+</html>

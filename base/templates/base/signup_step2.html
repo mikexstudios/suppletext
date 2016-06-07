@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+
+{% block bodyid %}signup-step2{% endblock %}
+
+{% block title %}Name your new wiki - suppleText{% endblock %}
+
+{% comment %}
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+    </script>
+{% endblock %}
+{% endcomment %}
+
+{% block errors %}
+{% if form.errors %}
+<div id="errors">
+    Save failed! Please correct the error{{form.errors|pluralize }} below.
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h2 id="catchphrase">Name your new wiki</h2>
+<p id="catchphrase-helper">
+    Just fill out the form below. It takes seconds to complete, and
+    that's it!
+</p>
+
+<form action="" method="post" name="signup_wiki_form" id="signup_wiki_form">
+    <div class="field">
+        {{ form.subdomain.errors }}
+        <label for="id_subdomain">Subdomain:</label>
+        {{ form.subdomain }}<span id="subdomain-input-helper">.suppletext.com</span>
+    </div>
+    <div class="field">
+        {{ form.title.errors }}
+        <label for="id_title">Wiki Title:</label>
+        {{ form.title }}
+    </div>
+
+    <button type="submit" id="signup_submit" name="submit" value="Claim">Give me my wiki! &raquo;</button>
+</form>
+
+
+{% endblock %}
+

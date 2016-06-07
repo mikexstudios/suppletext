@@ -1,0 +1,477 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+{% load rev_short_id %}
+
+{% block bodyid %}conflict{% endblock %}
+
+{% block title %}{{ page_tag }} - suppletext{% endblock %}
+
+{% block extracss %}
+    <link rel="stylesheet" type="text/css" href="{{ wiki_media_path }}/js/markitup/skins/simple/style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ wiki_media_path }}/js/markitup/sets/wiki/style.css" />
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/markitup/jquery.markitup.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/markitup/sets/wiki/set.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/diff_match_patch.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //Make the edit box fill the vertical screen. These numbers are
+            //currently just eyeballed.
+            //TODO: Take into account the claim bar.
+            function fill_vertical() {
+                var window_height = $(window).height();
+                if (window_height < 500) { return; }
+                $('#id_content').height(window_height - 300);
+                $('#formatting_rules').height(window_height - 105);
+            }
+            fill_vertical();
+            $(window).resize(fill_vertical);
+            
+            
+            //$('#formatting_rules').offset({
+            //    'top': $('a#view_formatting_rules').offset().top - 25
+            //});
+            //$('#formatting_rules').css('position', 'fixed');
+            $('a#view_formatting_rules').toggle(function() {
+                $('body').addClass('show_formatting_rules');
+                $('#formatting_rules').show();
+                //Also change link text
+                $(this).text('Hide formatting rules.');
+
+                return false;
+            }, 
+            function() {
+                $('#formatting_rules').hide();
+                $('body').removeClass('show_formatting_rules');
+                //Reset link text.
+                $(this).text('What are the formatting rules?');
+
+                return false;
+            });
+
+            $("#id_content").markItUp(mySettings);
+
+            //Special functions
+            $('#change-page-permissions-link').toggle(
+                function() {
+                    $('#change-page-permissions').slideDown();
+                    $(this).text('Hide Page Permissions');
+                    $(this).css('font-weight', 'bold');
+                    return false;
+                },
+                function() {
+                    //For some reason, slideUp() doesn't work here...
+                    $('#change-page-permissions').hide();
+                    $(this).text('Change Page Permissions');
+                    $(this).css('font-weight', 'normal');
+                    return false;
+                }
+            );
+            
+            $('#change-page-permissions select').change(function() { 
+                //Get change, and then POST via ajax.
+                $this = $(this); //Helpful for the post closure.
+                var role = $this.val();
+                var name = $this.attr('name');
+                //We need to do this in order ot set var id as key:
+                var post_data = {};
+                post_data[name] = role;
+                $.post('{% url page-permissions page_tag %}', post_data, function(data) {
+                    //The POST request is successful (some data is returned).
+                    if (data == 'success') {
+                        //Show a success message.
+                        msg = ' <small class="success">Updated!</small>';
+                        $this.prev().append(msg);
+                        $this.prev().children('small').delay(2000).fadeOut('slow');
+                    }
+                });
+            });
+            
+            //Warn user if navigate away from page before saving.
+            var unload_helper = function() {
+                window.onbeforeunload = function() {
+                    return 'If you leave this page, your changes will be lost! Continue?';
+                };
+                $('#id_content').unbind('keyup');
+                $('#id_note').unbind('keyup');
+            };
+            $('#id_content').keyup(unload_helper);
+            $('#id_note').keyup(unload_helper);
+            //However, if we perform any action (preview, save, cancel), don't
+            //prompt.
+            $('#actions button, p').click(function() {
+                window.onbeforeunload = null;
+            });
+
+            //If we get to edit form from preview, assume there have been changes.
+            function getURLParameter(name) {
+                return unescape(
+                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+                );
+            }
+            if (getURLParameter('from') == 'preview') { unload_helper(); }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<h2 id="page_title">Editing: <a href="{% url show page_tag %}">{{ page_tag }}</a></h2>
+
+<div id="conflict_helper">
+    <p class="helper"><strong>Someone has changed the page while you were editing it. Here is a diff of what changed:</strong></p>
+</div>
+
+<div id="page_content">
+    <div id="compare_helper">
+        <p>
+        {# We make these links open in new windows/tabs so that user isn't subjected #}
+        {# to the "Stay on this page?" message #}
+        Showing changes between <strong>your revision</strong> and previous revision <a href="{% url show page.tag latest.id|rev_short_id %}" class="rev_link" target="_blank">
+        {{ latest.id|rev_short_id }}</a> made by 
+        {# The reason why this is all bunched up is to get rid of the space before #}
+        {# the period '.'. #}
+        {% if latest.author %}<a href="{% url user-profile latest.author.username %}" target="_blank">{{ latest.author.username }}</a>{% else %}
+        an anonymous user ({{ latest.ip_address }}){% endif %}{% if latest.note %} with note:
+        </p>
+        <blockquote id="page_note">
+            <span class="quote">&#8220;</span>
+            {{ latest.note }}
+            <span class="quote">&#8221;</span>
+        </blockquote>
+        {% else %}:</p>{% endif %}
+    </div>
+
+{% for range, block in diffs %}
+    <h3 class="diff_header">@@ -{{ range.base.start }},{{ range.base.total_lines }} +{{ range.changed.start }},{{ range.changed.total_lines }} @@</h3>
+    <table class="diff">
+        <tbody class="spacing">
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num"></td>
+                <td class="line">&nbsp;</td>
+            </tr>
+        </tbody>
+    {% for change in block %}
+        {% ifequal change.type 'add' %}
+        <tbody class="add">
+            {# For add, just show changed and only line num in right col. #}
+            {% for line in change.changed.lines %}
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num">{{ forloop.counter|add:change.changed.offset }}</td>
+                {# We can use safe here since diff.py escapes all lines except for ins and del ones. #}
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {% ifequal change.type 'rem' %}
+        <tbody class="rem">
+            {# For add, just show base and only line num in left col. #}
+            {% for line in change.base.lines %}
+            <tr>
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num"></td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {% ifequal change.type 'mod' %}
+        <tbody class="mod">
+            {# For mod, means that something was deleted in base and added in #}
+            {# changed. So we show base first, followed by changed. #}
+            {% for line in change.base.lines %}
+            <tr class="base">
+                {# For base, we only show left line numbers. #}
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num"></td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+            {% for line in change.changed.lines %}
+            <tr class="changed">
+                {# For changed, we only show right line numbers. #}
+                <td class="left_num"></td>
+                <td class="right_num">{{ forloop.counter|add:change.changed.offset }}</td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {# 'unmod' should be the catch-all, but not an elegant way to do this #}
+        {% ifequal change.type 'unmod' %}
+        <tbody class="unmod">
+            {# Since unmod, it doesn't matter which side (base or changed) we use. #}
+            {% for line in change.base.lines %}
+            <tr>
+                {# For unmod, we show same line on both sides #}
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+    {% endfor %}
+        <tbody class="spacing">
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num"></td>
+                <td class="line">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    {# Ideally, we'd have a <= check #}
+    {% ifnotequal forloop.revcounter0 0 %}
+    <div class="spacer">...</div>    
+    {% endifnotequal %}
+{% endfor %}
+</div> <!-- page_content -->
+
+<div id="youredit_helper">
+    <p class="helper"><strong>Below is your original edit. Please manually edit
+        in the changes above.</strong></p>
+</div>
+
+<form action="?from=conflict" method="post" name="page_edit_form" id="page_edit_form">
+    {{ form.time }}
+    {# Couldn't find a way to modify the value of the field later after the form #}
+    {# was bound. So doing it manually. #}
+    <input type="hidden" name="latest_time" value="{{ latest.created }}" id="id_latest_time">
+
+    <small id="view_formatting">
+        (<a href="#" id="view_formatting_rules">What are the formatting rules?</a>)
+    </small>
+    <div class="field">
+        {{ form.content.errors }}
+        {{ form.content }}
+    </div>
+
+    {% if wiki_perm.special %}
+    <div id="additional-functions">
+        <strong>Special:</strong>
+        <!-- <a href="#" id="attach-files-link">View or Attach Files</a> | -->
+        {% if page_permissions_form %}
+        <a href="#" id="change-page-permissions-link">Change Page Permissions</a>
+        {% else %}
+        {# For now, since we only have one special function, show this: #}
+        <em>Not available on this page.</em>
+        {% endif %}
+    </div>
+    
+    {% if page_permissions_form %}
+    <div id="change-page-permissions" class="special-function">
+        <div class="section-title">
+            <h2>Page Permissions</h2>
+            <p>Control who can view and edit pages. Default page permissions
+            are defined by the administrator.</p>
+        </div>
+        
+        <div class="section">
+            <div class="field">
+                {{ page_permissions_form.read.errors }}
+                <label for="id_read">Who can <strong>read</strong> this page?</label> 
+                {{ page_permissions_form.read }}
+            </div> 
+            
+            <div class="field">
+                {{ page_permissions_form.write.errors }}
+                <label for="id_write">Who can <strong>edit</strong> this page?</label> 
+                {{ page_permissions_form.write }}
+            </div> 
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}{# wiki_perm.special #}
+
+    <div class="field">
+        {{ form.note.errors }}
+        <label for="id_note">Add a note describing your changes: <small>(optional)</small></label> 
+        {{ form.note }}
+    </div>
+    
+    <div id="actions">
+        <button id="preview_button" type="submit" name="action" value="Preview">Show Preview</button>
+        <button id="save_button" type="submit" name="action" value="Force Save">Save Page</button>
+        <p>or <a href="{% url show page_tag %}">Cancel edit</a></p>
+    </div>
+</form>
+{% endblock %}
+
+{% block page_actions %}
+{# Not sure whether or not to include this history link... it doesn't look good by itself. #}
+    <a href="{% url history page_tag %}" title="Click to view page edit history">{{ page.created|pretty_date:"F nS, Y @ P" }}</a>
+{% endblock %}
+
+{% block aftercontent %}
+<div id="formatting_rules">
+    <h3>Quick Formatting Rules</h3>
+    <p>Here are some commonly used markup rules. For the full version, please
+    visit the <a href="{% url show 'FormattingRules' %}" target="new">FormattingRules</a> page (opens in new
+    window).  <a href="http://www.wikicreole.org/wiki/Creole1.0" target="new">Creole 1.0 syntax</a> is fully supported.</p>
+
+    <!-- <h4>Basics</h4> -->
+    <table border="0" cellspacing="0" cellpadding="5"> 
+        <thead>
+            <tr>
+                <th class="leftcol">Type this:</th>
+                <th class="rightcol">To get this:</th>
+            </tr>
+        </thead>
+        <tr class="alternate"> 
+            <td>**Your Text**</td> 
+            <td><strong>Your Text</strong></td> 
+        </tr> 
+        <tr> 
+            <td>//Your Text//</td> 
+            <td><em>Your Text</em></td> 
+        </tr> 
+
+        <tr class="label"><td colspan="2">Links</td></tr>
+
+        <tr class="alternate"> 
+            <td>[[SandBox]]</td> 
+            <td><a href="SandBox">SandBox</a></td> 
+        </tr> 
+        <tr> 
+            <td>[[SandBox|Your Text]]</td> 
+            <td><a href="SandBox">Your Text</a></td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td>[[http://suppletext.com|Free wiki!]]</td> 
+            <td><a href="http://www.suppletext.com/">Free wiki!</a></td> 
+        </tr>
+        
+        <tr class="label"><td colspan="2">Headers</td></tr>
+
+        <tr class="alternate"> 
+            <td>== Large heading ==</td> 
+            <td><h2>Large</h2></td> 
+        </tr> 
+        <tr> 
+            <td>=== Medium heading ===</td> 
+            <td><h3>Medium</h3></td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td>==== Small heading ====</td> 
+            <td><h4>Small</h4></td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Lists</td></tr>
+
+        <tr> 
+            <td> 
+                * Bullet List<br/> 
+                * Second Item<br/> 
+                ** Sub Item
+            </td> 
+            <td> 
+                <ul> 
+                    <li>Bullet List</li> 
+                    <li> 
+                        Second Item
+                        <ul> 
+                            <li>Sub Item</li> 
+                        </ul> 
+                    </li> 
+                </ul> 
+            </td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td> 
+                # Numbered List<br/> 
+                # Second Item<br/> 
+                ## Sub Item
+            </td> 
+            <td> 
+                <ol> 
+                    <li>Numbered List</li> 
+                    <li> 
+                        Second Item
+                        <ol> 
+                            <li>Sub Item</li> 
+                        </ol> 
+                    </li> 
+                </ol> 
+            </td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Images</td></tr>
+
+        <tr> 
+            <td>&#123;&#123;http://site.com/image.gif|My Image}}</td> 
+            <td>(Image with alt. text)</td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Page Title</td></tr>
+
+        <tr class="alternate"> 
+            <td>&lt;&lt;title&gt;&gt;My Title&lt;&lt;/title&gt;&gt;</td> 
+            <td>(Changes page title)</td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Horizontal Line</td></tr>
+
+        <tr> 
+            <td>----</td> 
+            <td><hr/></td> 
+        </tr> 
+
+        <tr class="label"><td colspan="2">Table</td></tr>
+
+        <tr class="alternate"> 
+            <td> 
+                <pre>
+|=Heading 1 |=Heading 2 |
+|Cell 1     |Two\\lines |
+|Cell 2     |Cell 2     |
+                </pre> 
+            </td> 
+            <td> 
+                <table class="wiki_syntax_table"> 
+                    <tr> 
+                        <th>Heading 1</th> 
+                        <th>Heading 2</th> 
+                    </tr> 
+                    <tr> 
+                        <td>Cell 1</td> 
+                        <td>Two<br />lines</td> 
+                    </tr> 
+                    <tr> 
+                        <td>Cell 2</td> 
+                        <td>Cell 2</td> 
+                    </tr> 
+                </table> 
+            </td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">No Formatting</td></tr>
+
+        <tr> 
+            <td> 
+                {{{<br/> 
+                == [[don''t]]:<br/> 
+                //**format**//<br/> 
+                }}}
+            </td> 
+            <td> 
+                <pre>
+== [[dont''t]]:
+//**format**//
+                </pre> 
+            </td> 
+        </tr> 
+    </table> 
+
+</div>
+{% endblock %}
+

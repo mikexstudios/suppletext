@@ -1,0 +1,470 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import blueprint/reset.sass
+// To configure blueprint, edit the partials/base.sass file.
+@import partials/base.sass
+// Import all the default blueprint modules so that we can access their mixins.
+@import blueprint
+// Import the non-default scaffolding module.
+//@import blueprint/modules/scaffolding.sass
+
+//My imports:
+@import compass/utilities/general.sass
+//@import compass/utilities/text.sass
+@import compass/utilities/links.sass
+@import compass/utilities/lists.sass
+//@import compass/utilities/tables.sass
+//@import compass/layout.sass
+
+@import ../../common/rounded_corners.sass
+@import ../../common/common.sass
+
+//@import blueprint/modules/form.sass
+//+blueprint-form
+
+!blueprint_font_family = "Georgia, Times, Times New Roman, sans-serif"
+//!blueprint_font_family = "Helvetica, Arial, Verdana, sans-serif"
++blueprint-typography
+
+//Global page css
+a
+  +hover-link
+
+.fancy-button
+  display: block
+  position: relative
+  background: #aaa
+  padding: 5px
+  float: left
+  color: #fff
+  text-decoration: none
+  cursor: pointer
+  //i, span
+  .tl, .tr, .bl, .br
+    font-style: normal
+    //The background-image needs to be larger than the button or else it will
+    //show up inside the button.
+    background-image: url('../images/fancy-button/border_1000x200.png')
+    background-repeat: no-repeat
+    display: block
+    position: relative
+  .tl, .br
+    background-position: top left
+    position: absolute
+    margin-bottom: -5px
+    top: 0
+    left: 0
+    width: 5px
+    height: 5px
+  .bl, .tr
+    background-position: bottom left
+    left: -5px
+    padding: 0 0 5px 10px
+    margin-bottom: -5px
+    .br
+      background-position: bottom right
+      margin-bottom: 0
+      position: absolute
+      left: 100%
+      width: 10px
+      height: 100%
+      top: 0
+    .tr
+      background-position: top right
+      position: absolute
+      right: -10px
+      margin-left: 10px
+      top: -5px
+      height: 0
+.fancy-button-blue
+  //background-color: #3b4d7f
+  background-color: #2ae
+.fancy-button-green
+  background-color: #9d4
+.fancy-button-pink
+  background-color: #e1a
+.fancy-button:hover
+  background-color: #a00
+.fancy-button:active
+  background-color: #444
+//Using [class] prevents IE6 from reading the png file.
+.fancy-button[class]
+  background-image: url('../images/fancy-button/shade.png')
+  background-position: bottom 
+
+body
+  //Default font-size:
+  font-size: 1.1em
+
+  #container
+    +container
+  #errors
+    +error-style
+    font-size: 0.9em
+    margin-bottom: 0
+  #userbox
+    +userbox-style 
+  #messages
+    +messages-style 
+
+  #header
+    +column(!blueprint_grid_columns)
+    font-family: Georgia, Times, Times New Roman, sans-serif
+    margin-top: 10px
+    margin-bottom: 10px
+    border-bottom: 1px solid #ccc
+    text-align: right
+    h1
+      margin-left: 5px
+      font-size: 1.2em
+      float: left
+      margin-bottom: 0
+      //Hackish method of correcting blueprint set line-height:
+      line-height: 1.5
+      a
+        color: #333
+        text-decoration: none
+        .supple
+          color: #555
+
+    ul#navigation
+      font-variant: small-caps
+      font-size: 1.2em
+      margin-bottom: 0
+      +inline-list
+      li
+        margin-left: 10px
+  #content
+    +column(!blueprint_grid_columns)
+
+  #footer
+    +column(!blueprint_grid_columns)
+    margin-top: 20px
+    border-top: 1px solid #ccc
+
+    text-align: right
+    font-size: 0.6em
+    font-family: Georgia, Times, Times New Roman, sans-serif
+    color: #aaa
+    a
+      color: #aaa
+
+body#home, body#signup-step1, body#signup-step2, body#login, body#register, body#wiki-admin-instructions
+  #content
+    h2#catchphrase
+      font-size: 2.5em
+      letter-spacing: 0.03em
+      text-align: center
+      margin-bottom: 0
+    p#catchphrase-helper
+      display: block
+      padding-left: 20px
+      padding-right: 20px
+      text-align: center
+      color: #666
+      margin-bottom: 5px
+
+    #middle
+      margin-top: 20px
+      margin-bottom: 80px
+      img#screenshot
+        display: block
+        margin-left: auto
+        margin-right: auto
+      a#signup
+        background-color: #07b
+        color: #fff
+        font-size: 1.3em
+        width: 98%
+        text-align: center
+        text-shadow: 0px 1px 2px #6bd
+        .bl, .tr
+          padding: 2px 0 8px 10px
+      a#signup:hover
+        background-color: #047
+    
+    #features
+      .feature
+        padding: 10px 15px
+        +clearfix
+        .description
+          width: 50%
+          float: left
+          margin-right: 15px
+          h3
+            font-size: 1.1em
+            margin-bottom: 10px
+          p
+            font-size: 0.8em
+            margin: 0
+        img
+          margin-top: 5px
+          border: 5px solid #ddd
+          width: 310px
+          height: 100px
+          //+border-radius(5px)
+      .alt
+        border-top: 1px solid #ddd
+        border-bottom: 1px solid #ddd
+        background-color: #eee
+        //We reverse alt so that the image is on the left.
+        .description
+          float: right
+          margin-left: 15px
+          margin-right: 0
+    #signup_helper
+      margin-top: 0px
+      text-align: center
+
+
+
+          
+
+body#createwiki
+  #header
+    display: none
+    border-bottom: none
+  #content
+    margin-top: 100px
+    text-align: center
+    #brand
+      font-size: 3.0em
+      letter-spacing: 0.03em
+      margin-bottom: 5px
+      color: #777
+      .supple
+        color: #999
+    #catchphrase
+      font-size: 2.0em
+      letter-spacing: 0.03em
+      margin-bottom: 10px
+    img#loading
+      margin-bottom: 10px
+    #pleasewait
+      font-size: 2.0em
+      color: #999
+      margin-bottom: 20px
+    p#redirect-helper
+      font-size: 0.8em
+      color: #999
+      a
+        color: #999
+  #footer
+    display: none
+    border-top: none
+    
+body#signup-step1, body#signup-step2, body#login, body#logout
+  #content
+    #step
+      margin-top: 20px
+      text-align: center
+      margin-bottom: 5px
+      font-variant: small-caps
+      font-size: 1.6em
+    #rpx_embed 
+      display: block
+      margin: 0 auto
+
+body#signup-step2, body#register
+  #content
+    form#signup_wiki_form, form#register_form
+      display: block
+      margin: 0 auto
+      margin-top: 20px
+      //border: 1px solid #ccc
+      width: 510px
+      .field
+        clear: left
+        margin-bottom: 15px
+        padding-top: 10px
+        .errorlist
+          +errorlist-style
+        label
+          float: left
+          margin-right: 16px
+          width: 100px
+          text-align: right
+          font-size: 0.9em
+          //Move the labels slightly down.
+          padding-top: 8px
+        input[type=text]
+          font-size: 1.4em
+          //font-family: Georgia, Times, Times New Roman, sans-serif
+        input#id_subdomain
+          width: 200px
+          text-align: right
+        #subdomain-input-helper
+          font-size: 1.4em
+        input#id_title
+          width: 380px
+      button
+        display: block
+        margin-top: 20px
+        margin-left: auto
+        margin-right: 8px
+        font-family: Georgia, Times, Times New Roman, sans-serif
+        font-size: 1.2em
+        padding-top: 5px
+        padding-bottom: 5px
+        width: 200px
+    form#register_form
+      .field
+        label
+          float: left
+          margin-right: 16px
+          width: 120px
+        input[type=text]
+          font-size: 1.0em
+          width: 350px
+          padding: 5px
+      button
+        width: 150px
+
+    #associate_helper
+      color: #999
+      margin-top: 35px
+      text-align: center
+      a
+        color: #555
+      small
+        display: block
+        font-size: 0.8em
+
+body#user_profile, body#edit_profile
+  #user_header
+    float: left
+    width: 50%
+    img 
+      float: left
+      margin-right: 10px
+    p
+      margin-bottom: 0
+    p.edit
+      font-size: 0.7em
+    h2
+      margin-bottom: 0
+      line-height: 1
+      font-size: 1.3em
+  #user_information
+    font-size: 0.8em
+    dl
+      margin-bottom: 0
+      dt
+        float: left
+        width: 70px
+        text-align: right
+        margin-right: 10px
+    dl.email
+      dd
+        a
+          font-weight: bold
+          text-decoration: underline
+
+body#edit_profile
+  #user_header
+    width: 42.5%
+    p.change-picture
+      font-size: 0.8em
+      margin-top: 5px
+      line-height: 1
+    .actions
+      clear: left
+      padding-top: 10px
+      ul
+        +no-bullets
+        margin-left: 0px
+        font-size: 0.85em
+  #user_information
+    margin-left: 300px
+    border-left: 1px solid #ccc
+    padding-left: 10px
+    p.helper
+      margin-bottom: 5px
+    form#profile_form
+      .errorlist
+        +errorlist-style
+      p
+        margin-bottom: 10px
+      label
+        font-size: 1.10em
+        font-weight: bold
+        display: block
+      input[type=text]
+        width: 370px
+        font-size: 1.2em
+        padding: 4px 5px
+      .actions
+        text-align: right
+        button
+          margin-right: 5px
+          font-family: Georgia, Times, Times New Roman, sans-serif
+          font-size: 1.0em
+          padding-top: 7px
+          padding-bottom: 7px
+          width: 125px
+
+body#associate
+  #content
+    h2#catchphrase
+      font-size: 2.0em
+      letter-spacing: 0.03em
+      line-height: 1
+      margin-bottom: 10px 
+    p#catchphrase-helper
+      display: block
+      margin-bottom: 10px
+    #associated_logins
+      font-size: 0.9em
+      dl
+        margin-bottom: 10px
+        dt
+          float: left
+          width: 150px
+          text-align: right
+          margin-right: 10px
+          //Push down label for text input
+          margin-top: 5px
+        dd
+          input[type=text]
+            width: 400px
+            font-size: 0.9em
+            padding: 4px 5px
+          a
+            font-size: 0.7em
+    #add_login
+      text-align: center
+      margin-top: 15px
+      p
+        margin-bottom: 0
+      p.helper
+        font-size: 0.8em
+
+body#login, body#logout
+  #header, #footer
+    border: none
+  #content
+    text-align: center
+    #page_content
+      margin: 20px auto 40px
+      width: 65%
+      border: 10px solid #ccc
+      padding: 20px
+      +border-radius(10px)
+      h2
+        a
+          color: #333
+          text-decoration: none
+          .supple
+            color: #555
+      #messages
+        margin-top: 10px
+        margin-bottom: -15px
+      #rpx_embed 
+        margin-top: 20px
+  #footer 
+    margin-top: 30px
+
+body#wiki-admin-instructions
+  #catchphrase-helper
+    img
+      margin-top: 10px
+

@@ -1,0 +1,260 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import blueprint/reset.sass
+// To configure blueprint, edit the partials/base.sass file.
+@import partials/base.sass
+// Import all the default blueprint modules so that we can access their mixins.
+@import blueprint
+// Import the non-default scaffolding module.
+//@import blueprint/modules/scaffolding.sass
+
+//My imports:
+//@import compass/utilities/general.sass
+//@import compass/utilities/text.sass
+@import compass/utilities/links.sass
+@import compass/utilities/lists.sass
+//@import compass/utilities/tables.sass
+//@import compass/layout.sass
+
+@import ../../common/rounded_corners.sass
+@import ../../common/common.sass
+
+//@import blueprint/modules/form.sass
+//+blueprint-form
+
+!blueprint_font_family = "Georgia, Times, Times New Roman, sans-serif"
+//!blueprint_font_family = "Helvetica, Arial, Verdana, sans-serif"
++blueprint-typography
+
+//Global page css
+a
+  +hover-link
+
+.highlight
+  +highlight
+
+//For jQuery's simpletip
+.tooltip
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 2
+  display: none
+  padding: 10px 13px
+  color: #303030
+  background-color: #f5f5b5
+  border: 1px solid #deca7e
+  cursor: help
+
+
+body
+  //Default font-size:
+  font-size: 1.1em
+
+  #container
+    +container
+  #errors
+    +error-style
+    font-size: 0.9em
+    margin-bottom: 0
+  
+  //NOTE: This is duplicated in wiki's sass file.
+  #userbox
+    +userbox-style
+  #header
+    +column(!blueprint_grid_columns)
+    font-family: Georgia, Times, Times New Roman, sans-serif
+    //margin-top: 10px
+    //margin-bottom: 15px
+    //border-bottom: 1px solid #ccc
+    h1
+      display: inline
+      margin-left: 5px
+      font-size: 1.2em
+      margin-bottom: 0
+      //Hackish method of correcting blueprint set line-height:
+      line-height: 1.5
+      a
+        color: #333
+        text-decoration: none
+        .supple
+          color: #555
+    p
+      margin-left: 5px
+      display: inline
+      margin-bottom: 0
+      font-size: 0.7em
+  
+  #navigation
+    +column(!blueprint_grid_columns)
+    //background-color: #eee
+    margin-top: 5px
+    margin-bottom: 5px
+    #admin-menu, #subadmin-menu
+      //Can't use this since it cuts off the left edge of background button.
+      //margin-left: -10px
+      ul
+        +horizontal-list
+        font-size: 0.85em
+        background-color: #eee
+        border: 1px solid #ddd
+        +border-radius(6px)
+        li
+          padding: 2px 15px
+          padding-top: 2px
+        li.selected
+          font-weight: bold
+          background-color: #555
+          color: #eee
+        li:hover
+          background-color: #aaa
+          a
+            text-decoration: none
+    //TODO: Probably get rid of subadmin menu
+    #subadmin-menu
+      ul
+        font-size: 0.8em
+        margin-top: 5px
+        border-top: 1px solid #ccc
+        border-bottom: 1px solid #ccc
+        padding-left: 5px
+        li
+          padding: 1px 5px
+          margin: 0 2px
+          //+border-top-radius(6px)
+          //+border-radius(6px)
+        li.selected
+          font-weight: bold
+          background-color: transparent
+        li:hover
+          background-color: transparent
+  
+  #messages
+    +messages-style
+    margin-bottom: 10px
+
+  #content
+    +column(!blueprint_grid_columns)
+    margin-right: 0
+    .section-title
+      +column(7.5)
+      margin-left: 5px
+      margin-right: 15px
+      //border: 1px solid #ccc
+      //If the previous .section is not filled, then this section-title will
+      //tend to float in the .section column. This fixes that:
+      clear: both
+      h2
+        font-size: 1.0em
+        font-variant: small-caps
+        font-weight: bold
+        margin-bottom: 0
+      p
+        font-size: 0.8em
+        color: #999
+    .section
+      +column(!blueprint_grid_columns - 8.2, true)
+      margin-bottom: 15px
+      .errorlist
+        +errorlist-style
+      .field 
+        margin-bottom: 10px
+        label
+          font-weight: normal
+          font-size: 0.9em
+          small
+            font-size: 0.7em
+            color: #999
+        > small
+          display: block
+          font-size: 0.75em
+          color: #999
+        input[type=text]
+          margin-top: 0
+          width: 98%
+          font-size: 0.8em
+          border: 1px solid #aaa
+          padding: 5px
+        select
+          display: block
+          //margin-left: 10px
+          font-size: 0.8em
+          width: 100%
+          //Need the border so that we can set font-size in web-kit
+          border: 1px solid #ccc
+          padding: 5px
+      .actions
+        //text-align: right
+        margin-top: 20px
+        button
+          //margin-right: 5px
+          font-family: Georgia, Times, Times New Roman, sans-serif
+          font-size: 0.9em
+          padding-top: 6px
+          padding-bottom: 6px
+          width: 160px
+
+  #footer
+    +column(!blueprint_grid_columns)
+    margin-top: 50px
+    border-top: 1px solid #ccc
+
+    text-align: right
+    font-size: 0.6em
+    font-family: Georgia, Times, Times New Roman, sans-serif
+    color: #aaa
+    a
+      color: #aaa
+
+body#settings
+  #content
+    form 
+      input#id_front_page
+        width: 50%
+      //select#id_default_read
+        //width: 250px
+
+body#users
+  #content
+    table#manage-users
+      font-size: 0.8em
+      //Seems like the table is higher than the label to the left. So we push it 
+      //slightly down.
+      margin-top: 5px
+      thead
+        tr
+          th
+            background-color: transparent
+            padding: 2px 5px
+            border-top: 1px solid #ccc
+            border-bottom: 1px solid #ccc
+          th.actions
+            text-align: center
+      tr
+        td
+          padding: 3px 5px
+        td.username
+          width: 50%
+        td.role
+          width: 25%
+        td.actions
+          text-align: center
+          //font-size: 0.8em
+        td.disabled
+          color: #999
+          text-decoration: line-through
+    form#add-user-form
+      label
+        float: left
+        width: 100px
+      input#id_username
+        width: 250px
+      select#id_user_role
+        //Needs to be wider than input to match width
+        width: 263px
+      .actions
+        margin-top: 0
+        button
+          margin-left: 263px
+          font-size: 0.8em
+          width: 100px
+

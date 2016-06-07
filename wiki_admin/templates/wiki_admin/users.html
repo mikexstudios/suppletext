@@ -1,0 +1,87 @@
+{% extends "wiki_admin/base.html" %}
+{% load pretty_date %}
+
+{% block bodyid %}users{% endblock %}
+
+{# TODO: Insert website name in here #}
+{% block title %}Users{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ wiki_admin_media_path }}/js/jquery.confirm-1.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#manage-users tbody tr .actions a').confirm({ 
+                msg: 'Really? ',
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block nav-users %}<li class="selected">Users</li>{% endblock %}
+
+{% block content %}
+    
+<div class="section-title">
+    <h2>Manage Users</h2>
+    <p>These users have higher privileges than logged in users.</p>
+</div>
+
+<div class="section">
+    <table id="manage-users"> 
+    <thead> 
+        <tr> 
+        	<th class="username">Username</th> 
+        	<th class="role">Role</th> 
+        	<th class="actions">Actions</th> 
+        </tr> 
+    </thead> 
+     
+    <tbody> 
+        {% for m in members %}
+    	<tr> 
+            <td class="username">{{ m.user.username }}</td> 
+            <td class="role">{{ m.permission|capfirst }}</td> 
+            {% ifnotequal user m.user %}
+            <td class="actions"><a href="{% url wiki-admin-delete-user m.user.username %}" class='edit'>remove</a></td> 
+            {% else %}
+            <td class="actions disabled">remove</td> 
+            {% endifnotequal %}
+    	</tr> 
+        {% endfor %}
+    </tbody> 
+    </table> 
+
+</div>
+
+<div class="section-title">
+    <h2>Add User</h2>
+    <p>Contributors privileges depend on permission settings. Administrators can
+    do everything.</p>
+</div>
+
+<div class="section">
+    <form action="" method="post" name="add-user-form" id="add-user-form">
+        <div class="field">
+            {{ form.username.errors }}
+            <label for="id_username">Username:</label> 
+            {{ form.username }}
+        </div> 
+        
+        <div class="field">
+            {{ form.user_role.errors }}
+            <label for="id_user_role">User role:</label> 
+            {{ form.user_role }}
+        </div> 
+        
+        <div class="actions">
+            <button type="submit" name="submit" value="Add User">Add User &raquo;</button>
+        </div>
+    </form>
+</div>
+
+{# form.as_p #}
+
+</form>
+{% endblock %}
+

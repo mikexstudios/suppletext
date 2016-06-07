@@ -1,0 +1,40 @@
+#pip requirements.txt file
+# See this file for sample syntax:
+# ttp://gist.github.com/192093
+# and also:
+# http://mathematism.com/2009/jul/30/presentation-pip-and-virtualenv/
+
+#Using django's trunk in preparation for django 1.2
+Django == 1.2.7
+#-e git://github.com/django/django.git#egg=django
+
+#Current version is: MySQL-python-1.2.3c1
+#pip seems to have problems installing from sourceforge. So here's a direct link:
+#http://downloads.sourceforge.net/project/mysql-python/mysql-python-test/1.2.3c1/MySQL-python-1.2.3c1.tar.gz?use_mirror=voxel
+#MySQL-python
+
+#We install our own version of html5lib with a style bug patch applied:
+#-e git://github.com/mikexstudios/html5lib-python.git@c8d8ce0fde1ba46933d6ec1c7721e4aaf3ea2ad3#egg=html5lib
+
+#Depends on Genshi (so also installs that)
+#Genshi==0.5.1
+Creoleparser==0.6.1
+
+#It'd be cool if we can package this up in the future:
+#http://github.com/mikexstudios/google-diff-match-patch-python/zipball/master
+
+#django-rpx-plus (depends on django-picklefield, automatically installed):
+#NOTE: We need to pin django-picklefield here since django-rpx-plus (at the
+#      given commit hash does not have it pinned.
+django-picklefield==0.1.6
+-e git://github.com/mikexstudios/django-rpx-plus.git@c90a2cbfbb3c95a189bb00bc8eea092f627cceb9#egg=django_rpx_plus
+
+#For mailhide (recaptcha-client requires pycrypto)
+pycrypto==2.0.1
+recaptcha-client==1.0.5
+
+#To make email field 254 char.
+django_auth_longer_email==1.0.0
+
+#For maintenance mode
+-e git://github.com/mikexstudios/django-fakewall.git#egg=django_fakewall

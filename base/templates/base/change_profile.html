@@ -1,0 +1,48 @@
+{% extends "base/base.html" %}
+{% load humanize %}
+
+{% block bodyid %}edit_profile{% endblock %}
+{% block title %}Editing profile - suppleText{% endblock %}
+
+{% block header %}
+    <h1><a href="{% url home %}"><span class="supple">supple</span>Text</a></h1>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<div id="messages">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div id="user_header">
+    <img src="{{ user.avatar }}" />
+    <h2>{{ user.username }}</h2>
+    <p class="change-picture"><a href="http://www.gravatar.com">(change picture at gravatar)</a></p>
+
+    <div class="actions">
+        <ul>
+            <li>You currently have <strong>{{ user.num_logins|apnumber }}</strong> 
+            login{{ user.num_logins|pluralize }} associated with your account.
+            <a href="{% url auth_associate %}">Want to add more?  Manage your
+                logins &raquo</a>.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="user_information">
+    <p class="helper">This is what people will see on your <a href="{% url user-profile user.username %}">public profile</a> page.</p>
+    <form action="" method="post" name="profile_form" id="profile_form">
+        {{ form.as_p }}
+        <div class="actions">
+            <button type="submit" name="submit" value="Save">Update Profile &raquo;</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,275 @@
+html, body { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+
+div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, code, del, dfn, em, img, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+
+blockquote, q { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; quotes: "" ""; }
+blockquote:before, q:before, blockquote:after, q:after { content: ""; }
+
+th, td, caption { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; text-align: left; font-weight: normal; vertical-align: middle; }
+
+table { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; border-collapse: separate; border-spacing: 0; vertical-align: middle; }
+
+a img { border: none; }
+
+label { font-weight: bold; }
+
+fieldset { padding: 1.4em; margin: 0 0 1.5em 0; }
+
+legend { font-weight: bold; font-size: 1.2em; }
+
+input.text, input.title, input[type=text] { margin: 0.5em 0; background-color: #fff; padding: 5px; }
+input.title { font-size: 1.5em; }
+input[type=checkbox], input.checkbox, input[type=radio], input.radio { position: relative; top: 0.25em; }
+
+textarea { margin: 0.5em 0; padding: 5px; }
+
+select { margin: 0.5em 0; }
+
+fieldset { border: 1px solid #cccccc; }
+
+input.text, input.title, textarea, select { border: 1px solid #bbbbbb; }
+input.text:focus, input.title:focus, textarea:focus, select:focus { border: 1px solid #666666; }
+
+input.text, input.title { width: 300px; }
+
+textarea { width: 390px; height: 250px; }
+
+body { line-height: 1.5; font-family: Helvetica, Arial, Verdana, sans-serif; color: #333333; font-size: 75%; }
+
+h1 { font-weight: normal; color: #222222; font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
+h1 img { margin: 0; }
+
+h2 { font-weight: normal; color: #222222; font-size: 2em; margin-bottom: 0.75em; }
+
+h3 { font-weight: normal; color: #222222; font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
+
+h4 { font-weight: normal; color: #222222; font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
+
+h5 { font-weight: normal; color: #222222; font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
+
+h6 { font-weight: normal; color: #222222; font-size: 1em; font-weight: bold; }
+
+h2 img, h3 img, h4 img, h5 img, h6 img { margin: 0; }
+
+p { margin: 0 0 1.5em; }
+p img.left { display: inline; float: left; margin: 1.5em 1.5em 1.5em 0; padding: 0; }
+p img.right { display: inline; float: right; margin: 1.5em 0 1.5em 1.5em; padding: 0; }
+
+a { text-decoration: underline; color: #000099; }
+a:visited { color: #000066; }
+a:focus { color: black; }
+a:hover { color: black; }
+a:active { color: #cc0099; }
+
+blockquote { margin: 1.5em; color: #666; font-style: italic; }
+
+strong { font-weight: bold; }
+
+em { font-style: italic; }
+
+dfn { font-style: italic; font-weight: bold; }
+
+sup, sub { line-height: 0; }
+
+abbr, acronym { border-bottom: 1px dotted #666; }
+
+address { margin: 0 0 1.5em; font-style: italic; }
+
+del { color: #666; }
+
+pre { margin: 1.5em 0; white-space: pre; }
+
+pre, code, tt { font: 1em 'andale mono', 'lucida console', monospace; line-height: 1.5; }
+
+li ul, li ol { margin: 0 1.5em; }
+
+ul { margin: 0 1.5em 1.5em 1.5em; list-style-type: disc; }
+
+ol { margin: 0 1.5em 1.5em 1.5em; list-style-type: decimal; }
+
+dl { margin: 0 0 1.5em 0; }
+dl dt { font-weight: bold; }
+
+dd { margin-left: 1.5em; }
+
+table { margin-bottom: 1.4em; width: 100%; }
+
+th { font-weight: bold; }
+
+thead th { background: #c3d9ff; }
+
+th, td, caption { padding: 4px 10px 4px 5px; }
+
+tr.even td { background: #e5ecf9; }
+
+tfoot { font-style: italic; }
+
+caption { background: #eee; }
+
+.quiet { color: #666666; }
+
+.loud { color: #111111; }
+
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+body { font-size: 1.1em; }
+body #container { width: 700px; margin: 0 auto; }
+body #errors { text-align: center; padding-top: 5px; padding-bottom: 4px; background-color: #c44; font-weight: bold; color: white; font-size: 0.9em; }
+body #messages { font-size: 0.9em; margin-top: 5px; margin-bottom: 5px; }
+body #messages ul { list-style-position: inside; margin: 0; }
+body #messages ul li { padding: 3px 20px 2px; margin-bottom: 4px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+body #messages ul .success { background-color: #cfc; }
+body #messages ul .error { background-color: #fdd; }
+body #messages ul .info { background-color: #adf; }
+body .confirm-inline a { text-decoration: none; border-bottom: 1px dotted #555; }
+body #userbox { float: right; font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 0.70em; margin-bottom: -10px; background-color: #eee; padding: 2px 10px 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+body #userbox ul { list-style-type: none; margin: 0px; padding: 0px; display: inline; }
+body #userbox ul li { margin: 0px; padding: 0px; display: inline; }
+body #userbox ul #user a { font-weight: bold; color: #333; }
+body #userbox ul li.first { border-left: none; margin-left: 0; padding-left: 0; }
+body #userbox ul li { border-left: 1px solid #ccc; margin-left: 3px; padding-left: 5px; }
+body #header { clear: right; font-family: Georgia, Times, Times New Roman, sans-serif; padding-top: 10px; margin-left: 3px; }
+body #header h1 { font-size: 1.2em; margin-bottom: 0; margin-right: 10px; float: left; }
+body #header p { font-size: 0.8em; padding-top: 3px; margin-bottom: 0; }
+body #content { clear: both; }
+body #content #page_content { font-size: 0.9em; }
+body #content #page_content h1, body #content #page_content h2, body #content #page_content h3, body #content #page_content h4, body #content #page_content h5, body #content #page_content h6 { font-family: Georgia, Times, Times New Roman, sans-serif; }
+body #content #page_content h1 { font-size: 2.5em; line-height: 1.4em; margin-bottom: 0.44em; border-bottom: 1px solid #ddd; }
+body #content #page_content h2 { font-size: 2.25em; line-height: 1; margin-top: 0.50em; margin-bottom: 0.44em; }
+body #content #page_content h3 { font-size: 2.00em; line-height: 1; margin-top: 0.50em; margin-bottom: 0.44em; }
+body #content #page_content h4 { font-size: 1.75em; line-height: 1; margin-top: 0.50em; margin-bottom: 0.44em; }
+body #content #page_content h5 { font-size: 1.35em; line-height: 1; margin-top: 0.50em; margin-bottom: 0.50em; }
+body #content #page_content h6 { font-variant: small-caps; line-height: 1; font-size: 1.00em; margin-top: 0.60em; margin-bottom: 0.60em; }
+body #content #page_content p { margin-bottom: 1.0em; }
+body #content #page_content code { white-space: pre-wrap; }
+body #content #page_content pre, body #content #page_content code, body #content #page_content tt { font-size: 0.9em; }
+body #content #page_actions { border-top: 1px solid #ddd; padding-top: 3px; text-align: right; font-size: 0.6em; font-family: Georgia, Times, Times New Roman, sans-serif; }
+body #footer { margin-bottom: 10px; text-align: right; font-size: 0.6em; font-family: Georgia, Times, Times New Roman, sans-serif; color: #ccc; }
+body #footer a { color: #ccc; }
+
+body#show #content #page_content #old_revision_helper { font-size: 0.90em; font-family: Georgia, Times, Times New Roman, sans-serif; padding: 10px; background-color: #eee; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; overflow: hidden; display: inline-block; }
+body#show #content #page_content #old_revision_helper { display: block; }
+body#show #content #page_content #old_revision_helper p { margin: 0; }
+body#show #content #page_content #old_revision_helper .helper { margin-bottom: 5px; }
+body#show #content #page_content #old_revision_helper .top-line { margin: 0 10px; }
+body#show #content #page_content #old_revision_helper .top-line .rev_date { float: left; }
+body#show #content #page_content #old_revision_helper .top-line .rev_date .revision { font-weight: bold; display: block; float: left; width: 80px; }
+body#show #content #page_content #old_revision_helper .top-line .rev_date .full-date { font-size: 0.8em; }
+body#show #content #page_content #old_revision_helper .top-line .author { float: right; width: 40%; }
+body#show #content #page_content #old_revision_helper .top-line .author img { border: 1px solid #ddd; margin-right: 5px; float: left; }
+body#show #content #page_content #old_revision_helper blockquote { clear: both; margin: 0 10px; padding-top: 5px; font-size: 1.2em; }
+body#show #content #page_content #old_revision_helper blockquote .quote { font-size: 1.3em; line-height: 1; }
+
+body#edit #content, body#history #content, body#compare #content, body#conflict #content { font-family: Georgia, Times, Times New Roman, sans-serif; }
+body#edit #content #old_revision_helper, body#history #content #old_revision_helper, body#compare #content #old_revision_helper, body#conflict #content #old_revision_helper { font-size: 0.80em; padding: 10px; margin-top: -5px; margin-bottom: 20px; text-align: center; background-color: #eee; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+body#edit #content #old_revision_helper p, body#history #content #old_revision_helper p, body#compare #content #old_revision_helper p, body#conflict #content #old_revision_helper p { margin: 0; }
+body#edit #content h2#page_title, body#history #content h2#page_title, body#compare #content h2#page_title, body#conflict #content h2#page_title { font-size: 1.8em; border-bottom: none; margin-bottom: 7px; }
+body#edit #content small#view_formatting, body#history #content small#view_formatting, body#compare #content small#view_formatting, body#conflict #content small#view_formatting { display: block; font-size: 0.7em; text-align: right; margin-bottom: -32px; margin-right: 5px; }
+body#edit #content form#page_edit_form .errorlist, body#history #content form#page_edit_form .errorlist, body#compare #content form#page_edit_form .errorlist, body#conflict #content form#page_edit_form .errorlist { text-align: center; padding-top: 5px; padding-bottom: 4px; background-color: #c44; font-weight: bold; color: white; margin-left: 0; width: 100%; font-size: 0.8em; background-color: #fdd; color: #c44; -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; border-top-left-radius: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; border-top-right-radius: 10px; }
+body#edit #content form#page_edit_form .errorlist li, body#history #content form#page_edit_form .errorlist li, body#compare #content form#page_edit_form .errorlist li, body#conflict #content form#page_edit_form .errorlist li { list-style-type: none; margin-left: 0px; }
+body#edit #content form#page_edit_form .field, body#history #content form#page_edit_form .field, body#compare #content form#page_edit_form .field, body#conflict #content form#page_edit_form .field { clear: both; }
+body#edit #content form#page_edit_form .field textarea#id_content, body#history #content form#page_edit_form .field textarea#id_content, body#compare #content form#page_edit_form .field textarea#id_content, body#conflict #content form#page_edit_form .field textarea#id_content { margin-top: 0; margin-bottom: 0; width: 98%; font-size: 1.0em; font-family: monospace; border: 1px solid #aaa; }
+body#edit #content form#page_edit_form .field label[for='id_note'], body#history #content form#page_edit_form .field label[for='id_note'], body#compare #content form#page_edit_form .field label[for='id_note'], body#conflict #content form#page_edit_form .field label[for='id_note'] { font-weight: normal; font-size: 0.9em; }
+body#edit #content form#page_edit_form .field label[for='id_note'] small, body#history #content form#page_edit_form .field label[for='id_note'] small, body#compare #content form#page_edit_form .field label[for='id_note'] small, body#conflict #content form#page_edit_form .field label[for='id_note'] small { font-size: 0.7em; color: #999; }
+body#edit #content form#page_edit_form .field input#id_note, body#history #content form#page_edit_form .field input#id_note, body#compare #content form#page_edit_form .field input#id_note, body#conflict #content form#page_edit_form .field input#id_note { margin-top: 0; width: 98%; font-size: 0.8em; border: 1px solid #aaa; }
+body#edit #content form#page_edit_form #additional-functions, body#history #content form#page_edit_form #additional-functions, body#compare #content form#page_edit_form #additional-functions, body#conflict #content form#page_edit_form #additional-functions { margin-top: -2px; margin-bottom: 5px; font-size: 0.7em; }
+body#edit #content form#page_edit_form #additional-functions a, body#history #content form#page_edit_form #additional-functions a, body#compare #content form#page_edit_form #additional-functions a, body#conflict #content form#page_edit_form #additional-functions a { outline: none; }
+body#edit #content form#page_edit_form .special-function, body#history #content form#page_edit_form .special-function, body#compare #content form#page_edit_form .special-function, body#conflict #content form#page_edit_form .special-function { display: none; font-size: 0.9em; }
+body#edit #content form#page_edit_form .special-function .section-title, body#history #content form#page_edit_form .special-function .section-title, body#compare #content form#page_edit_form .special-function .section-title, body#conflict #content form#page_edit_form .special-function .section-title { float: left; width: 30%; margin-left: 5px; margin-right: 15px; clear: both; }
+body#edit #content form#page_edit_form .special-function .section-title h2, body#history #content form#page_edit_form .special-function .section-title h2, body#compare #content form#page_edit_form .special-function .section-title h2, body#conflict #content form#page_edit_form .special-function .section-title h2 { font-size: 1.0em; font-variant: small-caps; font-weight: bold; margin-bottom: 0; }
+body#edit #content form#page_edit_form .special-function .section-title p, body#history #content form#page_edit_form .special-function .section-title p, body#compare #content form#page_edit_form .special-function .section-title p, body#conflict #content form#page_edit_form .special-function .section-title p { font-size: 0.8em; color: #999; }
+body#edit #content form#page_edit_form .special-function .section, body#history #content form#page_edit_form .special-function .section, body#compare #content form#page_edit_form .special-function .section, body#conflict #content form#page_edit_form .special-function .section { float: left; width: 65%; margin-bottom: 15px; }
+body#edit #content form#page_edit_form .special-function .section .errorlist, body#history #content form#page_edit_form .special-function .section .errorlist, body#compare #content form#page_edit_form .special-function .section .errorlist, body#conflict #content form#page_edit_form .special-function .section .errorlist { text-align: center; padding-top: 5px; padding-bottom: 4px; background-color: #c44; font-weight: bold; color: white; margin-left: 0; width: 100%; font-size: 0.8em; background-color: #fdd; color: #c44; -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; border-top-left-radius: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; border-top-right-radius: 10px; }
+body#edit #content form#page_edit_form .special-function .section .errorlist li, body#history #content form#page_edit_form .special-function .section .errorlist li, body#compare #content form#page_edit_form .special-function .section .errorlist li, body#conflict #content form#page_edit_form .special-function .section .errorlist li { list-style-type: none; margin-left: 0px; }
+body#edit #content form#page_edit_form .special-function .section .field, body#history #content form#page_edit_form .special-function .section .field, body#compare #content form#page_edit_form .special-function .section .field, body#conflict #content form#page_edit_form .special-function .section .field { margin-bottom: 5px; }
+body#edit #content form#page_edit_form .special-function .section .field label, body#history #content form#page_edit_form .special-function .section .field label, body#compare #content form#page_edit_form .special-function .section .field label, body#conflict #content form#page_edit_form .special-function .section .field label { font-weight: normal; font-size: 0.9em; }
+body#edit #content form#page_edit_form .special-function .section .field label small, body#history #content form#page_edit_form .special-function .section .field label small, body#compare #content form#page_edit_form .special-function .section .field label small, body#conflict #content form#page_edit_form .special-function .section .field label small { font-size: 0.7em; color: #999; }
+body#edit #content form#page_edit_form .special-function .section .field label .success, body#history #content form#page_edit_form .special-function .section .field label .success, body#compare #content form#page_edit_form .special-function .section .field label .success, body#conflict #content form#page_edit_form .special-function .section .field label .success { font-weight: bold; color: #171; background-color: #ffc; }
+body#edit #content form#page_edit_form .special-function .section .field > small, body#history #content form#page_edit_form .special-function .section .field > small, body#compare #content form#page_edit_form .special-function .section .field > small, body#conflict #content form#page_edit_form .special-function .section .field > small { display: block; font-size: 0.75em; color: #999; }
+body#edit #content form#page_edit_form .special-function .section .field input[type=text], body#history #content form#page_edit_form .special-function .section .field input[type=text], body#compare #content form#page_edit_form .special-function .section .field input[type=text], body#conflict #content form#page_edit_form .special-function .section .field input[type=text] { margin-top: 0; width: 98%; font-size: 0.8em; border: 1px solid #aaa; padding: 5px; }
+body#edit #content form#page_edit_form .special-function .section .field select, body#history #content form#page_edit_form .special-function .section .field select, body#compare #content form#page_edit_form .special-function .section .field select, body#conflict #content form#page_edit_form .special-function .section .field select { display: block; font-size: 0.8em; width: 100%; border: 1px solid #ccc; padding: 5px; margin: 0; }
+body#edit #content form#page_edit_form #actions, body#history #content form#page_edit_form #actions, body#compare #content form#page_edit_form #actions, body#conflict #content form#page_edit_form #actions { margin-top: 5px; margin-bottom: 10px; text-align: right; }
+body#edit #content form#page_edit_form #actions button, body#history #content form#page_edit_form #actions button, body#compare #content form#page_edit_form #actions button, body#conflict #content form#page_edit_form #actions button { margin-right: 5px; font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 0.8em; padding-top: 7px; padding-bottom: 7px; width: 125px; }
+body#edit #content form#page_edit_form #actions button#preview_button, body#history #content form#page_edit_form #actions button#preview_button, body#compare #content form#page_edit_form #actions button#preview_button, body#conflict #content form#page_edit_form #actions button#preview_button { font-weight: bold; }
+body#edit #content form#page_edit_form #actions p, body#history #content form#page_edit_form #actions p, body#compare #content form#page_edit_form #actions p, body#conflict #content form#page_edit_form #actions p { display: inline; margin-left: -1px; font-size: 0.8em; }
+body#edit #content form#page_edit_form #actions p a, body#history #content form#page_edit_form #actions p a, body#compare #content form#page_edit_form #actions p a, body#conflict #content form#page_edit_form #actions p a { margin-left: 3px; }
+body#edit #formatting_rules, body#history #formatting_rules, body#compare #formatting_rules, body#conflict #formatting_rules { display: none; }
+
+body.show_formatting_rules #container { width: 960px; }
+body.show_formatting_rules #content { width: 58%; float: left; padding-left: 5px; padding-right: 10px; margin-right: 10px; border-right: 1px solid #ccc; }
+body.show_formatting_rules #footer { clear: both; width: 58%; }
+body.show_formatting_rules #formatting_rules { float: right; width: 38%; font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 0.75em; padding-right: 10px; overflow: auto; }
+body.show_formatting_rules #formatting_rules h3 { margin-bottom: 5px; }
+body.show_formatting_rules #formatting_rules h4 { margin-bottom: 2px; font-weight: bold; }
+body.show_formatting_rules #formatting_rules p { margin-bottom: 2px; }
+body.show_formatting_rules #formatting_rules table { font-size: 0.9em; }
+body.show_formatting_rules #formatting_rules table th, body.show_formatting_rules #formatting_rules table td { padding: 2px 0; }
+body.show_formatting_rules #formatting_rules table thead th { background-color: #fff; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; }
+body.show_formatting_rules #formatting_rules table thead .leftcol { width: 65%; }
+body.show_formatting_rules #formatting_rules table thead .rightcol { width: 35%; }
+body.show_formatting_rules #formatting_rules table thead th, body.show_formatting_rules #formatting_rules table thead td, body.show_formatting_rules #formatting_rules table tr.label th, body.show_formatting_rules #formatting_rules table tr.label td { text-align: left; font-size: 1.1em; font-weight: bold; }
+body.show_formatting_rules #formatting_rules table td { vertical-align: top; }
+body.show_formatting_rules #formatting_rules table td h2, body.show_formatting_rules #formatting_rules table td h3, body.show_formatting_rules #formatting_rules table td h4 { padding: 0; line-height: 1; margin: 0; }
+body.show_formatting_rules #formatting_rules table td ul, body.show_formatting_rules #formatting_rules table td ol { margin-bottom: 0; margin-right: 0; }
+body.show_formatting_rules #formatting_rules table td pre { margin: 0; }
+body.show_formatting_rules #formatting_rules table td .wiki_syntax_table { width: 100%; margin-bottom: 0; }
+
+body#preview #preview_bar { background-color: #c44; color: #fff; font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 0.9em; padding: 3px 10px; text-align: center; }
+body#preview #content form#page_edit_form { background-color: #eee; padding: 5px 10px; margin-bottom: 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+body#preview #content form#page_edit_form .field label[for='id_note'] { font-weight: normal; font-size: 0.9em; }
+body#preview #content form#page_edit_form .field label[for='id_note'] small { font-size: 0.7em; color: #999; }
+body#preview #content form#page_edit_form .field input#id_note { margin-top: 0; width: 98%; font-size: 0.8em; border: 1px solid #aaa; }
+body#preview #content form#page_edit_form #actions { margin-top: 5px; text-align: right; }
+body#preview #content form#page_edit_form #actions button { margin-right: 5px; font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 0.8em; padding-top: 7px; padding-bottom: 7px; width: 125px; }
+body#preview #content form#page_edit_form #actions button#reedit_button { font-weight: bold; }
+body#preview #content form#page_edit_form #actions p { display: inline; margin-left: -1px; font-size: 0.8em; }
+body#preview #content form#page_edit_form #actions p a { margin-left: 3px; }
+
+body#compare #content #page_content #compare_helper p, body#conflict #content #page_content #compare_helper p { margin-bottom: 15px; }
+body#compare #content #page_content #compare_helper p a, body#conflict #content #page_content #compare_helper p a { font-size: 1.2em; font-weight: bold; }
+body#compare #content #page_content #compare_helper blockquote#page_note, body#conflict #content #page_content #compare_helper blockquote#page_note { margin-top: -10px; margin-bottom: 15px; font-size: 1.1em; }
+body#compare #content #page_content #compare_helper blockquote#page_note .quote, body#conflict #content #page_content #compare_helper blockquote#page_note .quote { font-size: 1.3em; line-height: 1; }
+body#compare #content #page_content p.no-changes, body#conflict #content #page_content p.no-changes { padding: 10px; background-color: #EAF2F5; font-size: 1.2em; text-align: center; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+body#compare #content #page_content h3.diff_header, body#conflict #content #page_content h3.diff_header { font-size: 1.1em; font-family: monospace; background-color: #EAF2F5; color: #999; margin: 0; line-height: 1.4em; padding: 2px 10px; }
+body#compare #content #page_content table.diff, body#conflict #content #page_content table.diff { font-size: 1.0em; font-family: monospace; }
+body#compare #content #page_content table.diff tbody tr td, body#conflict #content #page_content table.diff tbody tr td { padding: 0; line-height: 1.4em; }
+body#compare #content #page_content table.diff tbody tr td.left_num, body#compare #content #page_content table.diff tbody tr td.right_num, body#conflict #content #page_content table.diff tbody tr td.left_num, body#conflict #content #page_content table.diff tbody tr td.right_num { background-color: #eaeaea; color: #666; width: 20px; text-align: right; padding: 0 5px; }
+body#compare #content #page_content table.diff tbody tr td.left_num, body#conflict #content #page_content table.diff tbody tr td.left_num { border-right: 1px solid #ddd; }
+body#compare #content #page_content table.diff tbody tr td.line, body#conflict #content #page_content table.diff tbody tr td.line { padding: 0 15px; background-color: #f8f8ff; }
+body#compare #content #page_content table.diff tbody.add tr td.line, body#conflict #content #page_content table.diff tbody.add tr td.line { background-color: #dfd; }
+body#compare #content #page_content table.diff tbody.rem tr td.line, body#conflict #content #page_content table.diff tbody.rem tr td.line { background-color: #fdd; }
+body#compare #content #page_content table.diff tbody.mod tr.base td.line, body#conflict #content #page_content table.diff tbody.mod tr.base td.line { background-color: #fdd; }
+body#compare #content #page_content table.diff tbody.mod tr.base td.line del, body#conflict #content #page_content table.diff tbody.mod tr.base td.line del { background-color: #faa; text-decoration: none; }
+body#compare #content #page_content table.diff tbody.mod tr.changed td.line, body#conflict #content #page_content table.diff tbody.mod tr.changed td.line { background-color: #dfd; }
+body#compare #content #page_content table.diff tbody.mod tr.changed td.line ins, body#conflict #content #page_content table.diff tbody.mod tr.changed td.line ins { background-color: #afa; text-decoration: none; }
+body#compare #content #page_content div.spacer, body#conflict #content #page_content div.spacer { margin-top: -20px; margin-bottom: 5px; text-align: center; font-size: 1.2em; }
+
+body#history #content #page_content table#revisions tr td { padding: 10px 3px; }
+body#history #content #page_content table#revisions tr td.checkbox { width: 20px; }
+body#history #content #page_content table#revisions tr td.revision-info { font-size: 0.90em; padding-left: 10px; }
+body#history #content #page_content table#revisions tr td.revision-info p { margin: 0; }
+body#history #content #page_content table#revisions tr td.revision-info .top-line .rev_date { float: left; }
+body#history #content #page_content table#revisions tr td.revision-info .top-line .rev_date .revision { font-weight: bold; display: block; float: left; width: 80px; }
+body#history #content #page_content table#revisions tr td.revision-info .top-line .rev_date .full-date { font-size: 0.8em; }
+body#history #content #page_content table#revisions tr td.revision-info .top-line .author { float: right; width: 40%; }
+body#history #content #page_content table#revisions tr td.revision-info .top-line .author img { border: 1px solid #ddd; margin-right: 5px; float: left; }
+body#history #content #page_content table#revisions tr td.revision-info blockquote { clear: both; margin: 0px 10px; padding-top: 0px; }
+body#history #content #page_content table#revisions tr td.revision-info blockquote .quote { font-size: 1.2em; line-height: 1; }
+body#history #content #page_content table#revisions tr.odd td.revision-info { background-color: #eee; }
+body#history #content #page_content table#revisions tr.even td { background-color: transparent; }
+
+body#perm-required #content { text-align: center; }
+body#perm-required #content #wiki_name { font-family: Georgia, Times, Times New Roman, sans-serif; font-size: 2.3em; }
+body#perm-required #content #page_content { margin: 20px auto 40px; width: 65%; border: 10px solid #ccc; padding: 20px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+body#perm-required #content #page_content h1 { font-size: 1.6em; border-bottom: none; margin-bottom: 20px; }
+body#perm-required #content #page_content #rpx_embed { display: block; margin: 0 auto; }
+body#perm-required #content #page_actions { border-top: none; }
+
+body#conflict #content #conflict_helper, body#conflict #content #youredit_helper { font-size: 0.80em; padding: 10px; margin-top: -5px; margin-bottom: 20px; text-align: center; background-color: #fdd; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+body#conflict #content #conflict_helper p, body#conflict #content #youredit_helper p { margin: 0; }
+body#conflict #content #youredit_helper { background-color: #eee; }
+body#conflict #content #youredit_helper #merge_link { background-color: #ffc; }
+body#conflict #content #page_content #compare_helper p a { font-size: 1.0em; font-weight: bold; }
+body#conflict #content form#page_edit_form #actions button#merge_button { font-weight: bold; }
+body#conflict #formatting_rules { position: fixed; right: 15px; top: 70px; }

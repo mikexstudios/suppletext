@@ -1,0 +1,37 @@
+#Additional Settings for Local Environment:
+#from settings import MIDDLEWARE_CLASSES, INSTALLED_APPS
+##For django-debug-toolbar
+#MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+#INSTALLED_APPS.append('debug_toolbar')
+#INTERNAL_IPS = ('127.0.0.1',)
+
+#For django-compress
+#COMPRESS = True
+
+#For maintenance mode
+#MAINTENANCE_MODE = True
+
+#DEBUG = False
+
+DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'suppletext.db'             # Or path to database file if using sqlite3.
+DATABASE_USER = ''             # Not used with sqlite3.
+DATABASE_PASSWORD = ''         # Not used with sqlite3.
+DATABASE_HOST = 'localhost'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
+#SESSION_COOKIE_DOMAIN = '.suppletext.com' #cannot have any ports on the end.
+#IS_TESTING_WIKI = True
+
+########################
+# reCaptcha settings:  #
+########################
+
+#Go here to generate keys: http://mailhide.recaptcha.net/apikey
+MAILHIDE_PUBLIC_KEY = ''
+MAILHIDE_PRIVATE_KEY = ''
+
+############################
+#django_rpx_plus settings: #
+############################
+RPXNOW_API_KEY = ''

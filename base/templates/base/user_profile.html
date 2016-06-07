@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+{% load pretty_date %}
+
+{% block bodyid %}user_profile{% endblock %}
+
+{% block title %}{{ profile.username }}'s profile - suppleText{% endblock %}
+
+{% comment %}
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+    </script>
+{% endblock %}
+{% endcomment %}
+
+{% block header %}
+    <h1><a href="{% url home %}"><span class="supple">supple</span>Text</a></h1>
+{% endblock %}
+
+{% block content %}
+
+<div id="user_header">
+    <img src="{{ profile.avatar }}" />
+    {% ifequal user.id profile.id %}
+    <p class="edit"><a href="{% url edit-user-profile %}">edit profile</a></p>
+    {% endifequal %}
+    <h2>{{ profile.username }}</h2>
+    {% if profile.get_profile.name %}
+    <p>({{ profile.get_profile.name }})</p>
+    {% endif %}
+</div>
+
+<div id="user_information">
+    <dl class="email">
+        <dt>Email:</dt>
+        <dd>{{ profile.mailhide|safe }}</dd>
+    </dl>
+    {% if profile.get_profile.website %}
+    <dl>
+        <dt>Website:</dt>
+        <dd><a href="">{{ profile.get_profile.website }}</a></dd>
+    </dl>
+    {% endif %}
+    <dl>
+        <dt>Member:</dt>
+        <dd>{{ profile.date_joined|date:"F nS, Y"}}</dd>
+    </dl>
+</div>
+
+<div id="public_wikis">
+    
+</div>
+
+<div id="public_activity">
+
+</div>
+
+
+{% endblock %}
+

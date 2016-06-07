@@ -1,0 +1,62 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+{% load rev_short_id %}
+{% load gravatar %}
+
+{% block bodyid %}show{% endblock %}
+
+{% block title %}{{ page.tag }} - suppletext{% endblock %}
+
+{% block javascript %}
+    {% if rev %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/jquery.confirm-1.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#old_revision_helper a.revert').confirm();
+        });
+    </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="page_content">
+    {% if rev %}
+    <div id="old_revision_helper">
+        <p class="helper"><strong>You are viewing an older version of <a href="{% url show page.tag %}">{{ page.tag }}</a></strong>. 
+        <a href="{% url revert page.tag page.id|rev_short_id %}" class="revert">Revert to this version?</a></p> 
+        <div class="top-line">
+            <p class="rev_date">
+            <span class="revision">rev {{ page.id|rev_short_id }}</span> 
+            {{ page.created|pretty_date }} <span class="full-date">({{ page.created|date:"nS M Y, h:iA" }})</span>
+            </p>
+            <p class="author">
+                {% if page.author.email %}
+                <img src="{{ page.author.email|gravatar_img:"16" }}" alt="" height="16" width="16" />
+                {% endif %}
+
+                {% if page.author.username %}
+                <span class="username">by <a href="{% url user-profile page.author.username %}">{{ page.author.username }}</a></span>
+                {% else %}
+                by Anonymous (<span title="Anonymous User's IP Address">{{ page.ip_address }}</span>)
+                {% endif %}
+            </p>
+        </div>
+        {% if page.note %}
+        <blockquote class="note">
+            <span class="quote">&#8220;</span>
+            {{ page.note }}
+            <span class="quote">&#8221;</span>
+        </blockquote>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if page.title %}
+    <h1>{{ page.title|safe }}</h1>
+    {% endif %}
+
+    {{ content_html|safe }}
+</div>
+{% endblock %}
+

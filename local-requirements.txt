@@ -1,0 +1,13 @@
+# pip requirements.txt file
+# This file contains extra modules needed for local dev environment!
+
+#django-debug-toolbar >= 0.8.0
+
+#ipython
+#readline
+
+#For easy deployment
+fabric
+
+#For testing
+django-test-utils

@@ -1,0 +1,357 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+
+{% block bodyid %}edit{% endblock %}
+
+{% block title %}{{ page_tag }} - suppletext{% endblock %}
+
+{% block extracss %}
+    <link rel="stylesheet" type="text/css" href="{{ wiki_media_path }}/js/markitup/skins/simple/style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ wiki_media_path }}/js/markitup/sets/wiki/style.css" />
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/markitup/jquery.markitup.js"></script>
+    <script type="text/javascript" src="{{ wiki_media_path }}/js/markitup/sets/wiki/set.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //Make the edit box fill the vertical screen. These numbers are
+            //currently just eyeballed.
+            //TODO: Take into account the claim bar.
+            function fill_vertical() {
+                var window_height = $(window).height();
+                if (window_height < 500) { return; }
+                $('#id_content').height(window_height - 300);
+                $('#formatting_rules').height(window_height - 105);
+            }
+            fill_vertical();
+            $(window).resize(fill_vertical);
+            
+
+            $('a#view_formatting_rules').toggle(function() {
+                $('body').addClass('show_formatting_rules');
+                $('#formatting_rules').show();
+                //Also change link text
+                $(this).text('Hide formatting rules.');
+
+                return false;
+            }, 
+            function() {
+                $('#formatting_rules').hide();
+                $('body').removeClass('show_formatting_rules');
+                //Reset link text.
+                $(this).text('What are the formatting rules?');
+
+                return false;
+            });
+
+            $("#id_content").markItUp(mySettings);
+
+            //Special functions
+            $('#change-page-permissions-link').toggle(
+                function() {
+                    $('#change-page-permissions').slideDown();
+                    $(this).text('Hide Page Permissions');
+                    $(this).css('font-weight', 'bold');
+                    return false;
+                },
+                function() {
+                    //For some reason, slideUp() doesn't work here...
+                    $('#change-page-permissions').hide();
+                    $(this).text('Change Page Permissions');
+                    $(this).css('font-weight', 'normal');
+                    return false;
+                }
+            );
+            
+            $('#change-page-permissions select').change(function() { 
+                //Get change, and then POST via ajax.
+                $this = $(this); //Helpful for the post closure.
+                var role = $this.val();
+                var name = $this.attr('name');
+                //We need to do this in order ot set var id as key:
+                var post_data = {};
+                post_data[name] = role;
+                $.post('{% url page-permissions page_tag %}', post_data, function(data) {
+                    //The POST request is successful (some data is returned).
+                    if (data == 'success') {
+                        //Show a success message.
+                        msg = ' <small class="success">Updated!</small>';
+                        $this.prev().append(msg);
+                        $this.prev().children('small').delay(2000).fadeOut('slow');
+                    }
+                });
+            });
+            
+            //Warn user if navigate away from page before saving.
+            var unload_helper = function() {
+                window.onbeforeunload = function() {
+                    return 'If you leave this page, your changes will be lost! Continue?';
+                };
+                $('#id_content').unbind('keyup');
+                $('#id_note').unbind('keyup');
+            };
+            $('#id_content').keyup(unload_helper);
+            $('#id_note').keyup(unload_helper);
+            //However, if we perform any action (preview, save, cancel), don't
+            //prompt.
+            $('#actions button, p').click(function() {
+                window.onbeforeunload = null;
+            });
+
+            //If we get to edit form from preview, assume there have been changes.
+            function getURLParameter(name) {
+                return unescape(
+                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+                );
+            }
+            if (getURLParameter('from') == 'preview') { unload_helper(); }
+            
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<h2 id="page_title">Editing: <a href="{% url show page_tag %}">{{ page_tag }}</a></h2>
+
+{% if rev %}
+<div id="old_revision_helper">
+    <p class="helper"><strong>You are editing an older revision.
+        If you save, this edit will become the current revision.</strong></p>
+</div>
+{% endif %}
+
+<form action="" method="post" name="page_edit_form" id="page_edit_form">
+    {{ form.time.errors }}
+    {{ form.time }}
+
+    <small id="view_formatting">
+        (<a href="#" id="view_formatting_rules">What are the formatting rules?</a>)
+    </small>
+    <div class="field">
+        {{ form.content.errors }}
+        {{ form.content }}
+    </div>
+    
+    {# Right now, we only have one special function, so we just check that. #}
+    {% if page_permissions_form %}
+    <div id="additional-functions">
+        <strong>Special:</strong>
+        <!-- <a href="#" id="attach-files-link">View or Attach Files</a> | -->
+        {% if page_permissions_form %}
+        <a href="#" id="change-page-permissions-link">Change Page Permissions</a>
+        {% else %}
+        {# For now, since we only have one special function, show this: #}
+        <em>Not available on this page.</em>
+        {% endif %}
+    </div>
+    
+    {% if page_permissions_form %}
+    <div id="change-page-permissions" class="special-function">
+        <div class="section-title">
+            <h2>Page Permissions</h2>
+            <p>Control who can view and edit pages. Default page permissions
+            are defined by the administrator.</p>
+        </div>
+        
+        <div class="section">
+            <div class="field">
+                {{ page_permissions_form.view.errors }}
+                <label for="id_read">Who can <strong>read</strong> this page?</label> 
+                {{ page_permissions_form.view }}
+            </div> 
+            
+            <div class="field">
+                {{ page_permissions_form.edit.errors }}
+                <label for="id_write">Who can <strong>edit</strong> this page?</label> 
+                {{ page_permissions_form.edit }}
+            </div> 
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}{# wiki_perm.special #}
+
+    <div class="field">
+        {{ form.note.errors }}
+        <label for="id_note">Add a note describing your changes: <small>(optional)</small></label> 
+        {{ form.note }}
+    </div>
+    
+    <div id="actions">
+        <button id="preview_button" type="submit" name="action" value="Preview">Show Preview</button>
+        <button id="save_button" type="submit" name="action" value="Save">Save Page</button>
+        <p>or <a href="{% url show page_tag %}">Cancel edit</a></p>
+    </div>
+</form>
+{% endblock %}
+
+{% block page_actions %}
+{# Not sure whether or not to include this history link... it doesn't look good by itself. #}
+    <a href="{% url history page_tag %}" title="Click to view page edit history">{{ page.created|pretty_date:"F nS, Y @ P" }}</a>
+{% endblock %}
+
+{% block aftercontent %}
+<div id="formatting_rules">
+    <h3>Quick Formatting Rules</h3>
+    <p>Here are some commonly used markup rules. For the full version, please
+    visit the <a href="{% url show 'FormattingRules' %}" target="new">FormattingRules</a> page (opens in new
+    window).  <a href="http://www.wikicreole.org/wiki/Creole1.0" target="new">Creole 1.0 syntax</a> is fully supported.</p>
+
+    <!-- <h4>Basics</h4> -->
+    <table border="0" cellspacing="0" cellpadding="5"> 
+        <thead>
+            <tr>
+                <th class="leftcol">Type this:</th>
+                <th class="rightcol">To get this:</th>
+            </tr>
+        </thead>
+        <tr class="alternate"> 
+            <td>**Your Text**</td> 
+            <td><strong>Your Text</strong></td> 
+        </tr> 
+        <tr> 
+            <td>//Your Text//</td> 
+            <td><em>Your Text</em></td> 
+        </tr> 
+
+        <tr class="label"><td colspan="2">Links</td></tr>
+
+        <tr class="alternate"> 
+            <td>[[SandBox]]</td> 
+            <td><a href="SandBox">SandBox</a></td> 
+        </tr> 
+        <tr> 
+            <td>[[SandBox|Your Text]]</td> 
+            <td><a href="SandBox">Your Text</a></td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td>[[http://suppletext.com|Free wiki!]]</td> 
+            <td><a href="http://www.suppletext.com/">Free wiki!</a></td> 
+        </tr>
+        
+        <tr class="label"><td colspan="2">Headers</td></tr>
+
+        <tr class="alternate"> 
+            <td>== Large heading ==</td> 
+            <td><h2>Large</h2></td> 
+        </tr> 
+        <tr> 
+            <td>=== Medium heading ===</td> 
+            <td><h3>Medium</h3></td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td>==== Small heading ====</td> 
+            <td><h4>Small</h4></td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Lists</td></tr>
+
+        <tr> 
+            <td> 
+                * Bullet List<br/> 
+                * Second Item<br/> 
+                ** Sub Item
+            </td> 
+            <td> 
+                <ul> 
+                    <li>Bullet List</li> 
+                    <li> 
+                        Second Item
+                        <ul> 
+                            <li>Sub Item</li> 
+                        </ul> 
+                    </li> 
+                </ul> 
+            </td> 
+        </tr> 
+        <tr class="alternate"> 
+            <td> 
+                # Numbered List<br/> 
+                # Second Item<br/> 
+                ## Sub Item
+            </td> 
+            <td> 
+                <ol> 
+                    <li>Numbered List</li> 
+                    <li> 
+                        Second Item
+                        <ol> 
+                            <li>Sub Item</li> 
+                        </ol> 
+                    </li> 
+                </ol> 
+            </td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Images</td></tr>
+
+        <tr> 
+            <td>&#123;&#123;http://site.com/image.gif|My Image}}</td> 
+            <td>(Image with alt. text)</td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Page Title</td></tr>
+
+        <tr class="alternate"> 
+            <td>&lt;&lt;title&gt;&gt;My Title&lt;&lt;/title&gt;&gt;</td> 
+            <td>(Changes page title)</td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">Horizontal Line</td></tr>
+
+        <tr> 
+            <td>----</td> 
+            <td><hr/></td> 
+        </tr> 
+
+        <tr class="label"><td colspan="2">Table</td></tr>
+
+        <tr class="alternate"> 
+            <td> 
+                <pre>
+|=Heading 1 |=Heading 2 |
+|Cell 1     |Two\\lines |
+|Cell 2     |Cell 2     |
+                </pre> 
+            </td> 
+            <td> 
+                <table class="wiki_syntax_table"> 
+                    <tr> 
+                        <th>Heading 1</th> 
+                        <th>Heading 2</th> 
+                    </tr> 
+                    <tr> 
+                        <td>Cell 1</td> 
+                        <td>Two<br />lines</td> 
+                    </tr> 
+                    <tr> 
+                        <td>Cell 2</td> 
+                        <td>Cell 2</td> 
+                    </tr> 
+                </table> 
+            </td> 
+        </tr> 
+        
+        <tr class="label"><td colspan="2">No Formatting</td></tr>
+
+        <tr> 
+            <td> 
+                {{{<br/> 
+                == [[don''t]]:<br/> 
+                //**format**//<br/> 
+                }}}
+            </td> 
+            <td> 
+                <pre>
+== [[dont''t]]:
+//**format**//
+                </pre> 
+            </td> 
+        </tr> 
+    </table> 
+
+</div>
+{% endblock %}
+

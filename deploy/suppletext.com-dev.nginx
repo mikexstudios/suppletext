@@ -1,0 +1,52 @@
+# nginx config file for suppletext.com (dev)
+# Because we need subdomain functionality, we can't run the dev version at
+# http://dev.suppletext.com. So we, instead, run it at some specified port.
+# Which we decide is port 8000.
+
+#We can't do redirect from www to without the www while keeping the port
+#number. But that's fine since this is only the dev server.
+#server {
+#    listen 8000;
+#    server_name www.suppletext.com;
+#    rewrite ^/(.*) http://suppletext.com:8000/$1 permanent;
+#}
+
+# We need to duplicate this for wildcard subdomains.
+server {
+    listen 8000;
+    server_name *.suppletext.com;
+    access_log /home/suppletext/dev/logs/access.log;
+    error_log /home/suppletext/dev/logs/error.log;
+    
+    location /static {
+        #autoindex on;
+        #index index.html;
+        alias /home/suppletext/dev/suppletext/static;
+        #expires 1d;
+    }
+    
+    location / {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass 127.0.0.1:8081;
+    }
+}
+
+# For base site.
+server {
+    listen 8000;
+    server_name suppletext.com;
+    access_log /home/suppletext/dev/logs/access.log;
+    error_log /home/suppletext/dev/logs/error.log;
+
+    location /static {
+        #autoindex on;
+        #index index.html;
+        root /home/suppletext/dev/suppletext/;
+        #expires 1d;
+    }
+
+    location / {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass 127.0.0.1:8081;
+    }
+}

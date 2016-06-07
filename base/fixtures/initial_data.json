@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "base.wiki", "fields": {"name": "Default Pages", "default_view": "anyone", "created": "2010-02-21 11:32:57", "default_special": "contributor", "tagline": "", "front_page": "HomePage", "default_edit": "contributor", "tag": "default"}}]

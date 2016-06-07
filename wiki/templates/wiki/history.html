@@ -1,0 +1,112 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+{% load gravatar %}
+{% load rev_short_id %}
+
+{% block bodyid %}history{% endblock %}
+
+{% block title %}{{ page.tag }} history - suppletext{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var num_checked = 0;
+            $('input.rev_checkbox').click(function() {
+                //Check to see if more than two checkboxes are checked. If so,
+                //clear them.
+                var $this = $(this);
+                if ($this.is(':checked')) {
+                    num_checked++;
+                    if (num_checked > 2) {
+                        //Clear existing checkboxes
+                        $('.rev_checkbox').attr('checked', false);
+                        //Check this checkbox
+                        $this.attr('checked', true);
+                        //Set the num_checked
+                        num_checked = 1;
+                    }
+                } else {
+                    //unchecked
+                    num_checked--;
+                }
+
+                console.log(num_checked);
+            });
+
+            $('form#history_form').submit(function() {
+                //Get the checked values
+                var rev_checked = $('.rev_checkbox:checked');
+                if (rev_checked.length == 2) {
+                    //Redirect
+                    window.location.href = '{% url compare page.tag %}' +
+                                           rev_checked[0].value + '/' +
+                                           rev_checked[1].value + '/';
+                } else {
+                    //TODO: Display error message.
+                }
+                
+                return false;
+            });
+
+            //There may be checkboxes already checked if user reloads page
+            //while there are checkboxes checked. So we'll have to initialize
+            //the num_checked value:
+            num_checked = $('.rev_checkbox:checked').length;
+
+            //If there are no checkboxes checked when page loads, we, by
+            //default, check the two most recent.
+            var checkboxes = $('.rev_checkbox');
+            if (num_checked <= 0 && checkboxes.length >= 2) {
+                checkboxes.get(0).checked = true;
+                checkboxes.get(1).checked = true;
+                num_checked += 2;
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<h2 id="page_title">History for <a href="{% url show page.tag %}">{{ page.tag }}</a></h2>
+<div id="page_content">
+    <form method="get" id="history_form" action="{% url compare page.tag %}">
+    <p id="compare-helper">Select two and <button type="submit">click to compare</button>:</p>
+    <table cellspacing="0" id="revisions">
+    <tbody>
+    {% for h in history %}
+        <tr class="{% cycle 'odd' 'even' %}">
+            <td class="checkbox"><input type="checkbox" class="rev_checkbox" name="rev" value="{{ h.id|rev_short_id }}" /></td>
+            <td class="revision-info">
+                <div class="top-line">
+                    <p class="rev_date">
+                    <a href="{% url show page.tag h.id|rev_short_id %}"><span class="revision">rev {{ h.id|rev_short_id }}</span> 
+                    {{ h.created|pretty_date }} <span class="full-date">({{ h.created|date:"nS M Y, h:iA" }})</span></a>
+                    </p>
+                    <p class="author">
+                        {% if h.author.email %}
+                        <img src="{{ h.author.email|gravatar_img:"16" }}" alt="" height="16" width="16" />
+                        {% endif %}
+
+                        {% if h.author.username %}
+                        <span class="username">by <a href="{% url user-profile h.author.username %}">{{ h.author.username }}</a></span>
+                        {% else %}
+                        by Anonymous (<span title="Anonymous User's IP Address">{{ h.ip_address }}</span>)
+                        {% endif %}
+                    </p>
+                </div>
+                {% if h.note %}
+                <blockquote class="note">
+                    <span class="quote">&#8220;</span>
+                    {{ h.note }}
+                    <span class="quote">&#8221;</span>
+                </blockquote>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </form>
+</div>
+{% endblock %}
+

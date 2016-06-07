@@ -1,0 +1,135 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+{% load rev_short_id %}
+
+{% block bodyid %}compare{% endblock %}
+
+{% block title %}{{ page.tag }} comparison - suppletext{% endblock %}
+
+{% comment %}
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+    </script>
+{% endblock %}
+{% endcomment %}
+
+{% block content %}
+<h2 id="page_title">Comparing <a href="{% url show page.tag %}">{{ page.tag }}</a></h2>
+<div id="page_content">
+    <div id="compare_helper">
+        <p>
+        Showing changes from revision <a href="{% url show page.tag page.id|rev_short_id %}" class="rev_link">
+        {{ page.id|rev_short_id }}</a> to <a href="{% url show page.tag page_b.id|rev_short_id %}" class="rev_link">
+        {{ page_b.id|rev_short_id }}</a> made by 
+        {# The reason why this is all bunched up is to get rid of the space before #}
+        {# the period '.'. #}
+        {% if page_b.author %}<a href="{% url user-profile page_b.author.username %}">{{ page_b.author.username }}</a>{% else %}
+        an anonymous user ({{ page_b.ip_address }}){% endif %}{% if page_b.note %} with note:
+        </p>
+        <blockquote id="page_note">
+            <span class="quote">&#8220;</span>
+            {{ page_b.note }}
+            <span class="quote">&#8221;</span>
+        </blockquote>
+        {% else %}.</p>{% endif %}
+    </div>
+
+{% for range, block in diffs %}
+    <h3 class="diff_header">@@ -{{ range.base.start }},{{ range.base.total_lines }} +{{ range.changed.start }},{{ range.changed.total_lines }} @@</h3>
+    <table class="diff">
+        <tbody class="spacing">
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num"></td>
+                <td class="line">&nbsp;</td>
+            </tr>
+        </tbody>
+    {% for change in block %}
+        {% ifequal change.type 'add' %}
+        <tbody class="add">
+            {# For add, just show changed and only line num in right col. #}
+            {% for line in change.changed.lines %}
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num">{{ forloop.counter|add:change.changed.offset }}</td>
+                {# We can use safe here since diff.py escapes all lines except for ins and del ones. #}
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {% ifequal change.type 'rem' %}
+        <tbody class="rem">
+            {# For add, just show base and only line num in left col. #}
+            {% for line in change.base.lines %}
+            <tr>
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num"></td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {% ifequal change.type 'mod' %}
+        <tbody class="mod">
+            {# For mod, means that something was deleted in base and added in #}
+            {# changed. So we show base first, followed by changed. #}
+            {% for line in change.base.lines %}
+            <tr class="base">
+                {# For base, we only show left line numbers. #}
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num"></td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+            {% for line in change.changed.lines %}
+            <tr class="changed">
+                {# For changed, we only show right line numbers. #}
+                <td class="left_num"></td>
+                <td class="right_num">{{ forloop.counter|add:change.changed.offset }}</td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+
+        {# 'unmod' should be the catch-all, but not an elegant way to do this #}
+        {% ifequal change.type 'unmod' %}
+        <tbody class="unmod">
+            {# Since unmod, it doesn't matter which side (base or changed) we use. #}
+            {% for line in change.base.lines %}
+            <tr>
+                {# For unmod, we show same line on both sides #}
+                <td class="left_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="right_num">{{ forloop.counter|add:change.base.offset }}</td>
+                <td class="line">{{ line|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endifequal %}
+    {% endfor %}
+        <tbody class="spacing">
+            <tr>
+                <td class="left_num"></td>
+                <td class="right_num"></td>
+                <td class="line">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    {# Ideally, we'd have a <= check #}
+    {% ifnotequal forloop.revcounter0 0 %}
+    <div class="spacer">...</div>    
+    {% endifnotequal %}
+{% empty %}
+<p class="no-changes">No changes were made. The two revisions are
+identical.</p>
+{% endfor %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,58 @@
+{% extends "wiki/base.html" %}
+{% load pretty_date %}
+
+{% block bodyid %}preview{% endblock %}
+
+{% block title %}{{ page.tag }} Preview - suppletext{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //We assume that if user clicked preview, there are changes.
+            window.onbeforeunload = function() {
+                return 'If you leave this page, your changes will be lost! Continue?';
+            };
+            //If we perform any action (preview, save, cancel), don't prompt.
+            $('#actions button, p').click(function() {
+                window.onbeforeunload = null;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block beforecontainer %}
+<div id="preview_bar">
+   Remember that this is only a preview; your changes have not yet been saved! 
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="page_content">
+    {% if page.title %}
+    <h1>{{ page.title|safe }}</h1>
+    {% endif %}
+
+    {{ content_html|safe }}
+</div>
+
+<form action="?from=preview" method="post" name="page_edit_form" id="page_edit_form">
+    {{ form.time }}
+    {{ form.content }}
+    <div class="field">
+        {{ form.note.errors }}
+        <label for="id_note">Add a note describing your changes: <small>(optional)</small></label> 
+        {{ form.note }}
+    </div>
+    
+    <div id="actions">
+        {# We replace 'Edit' with 'Save' so that user can re-visit the conflict screen. #}
+        <button id="reedit_button" type="submit" name="action" value="{% ifequal from 'conflict' %}Save{% else %}Edit{% endifequal %}">Re-edit Page</button>
+        <button id="save_button" type="submit" name="action" value="{% ifequal from 'conflict' %}Force Save{% else %}Save{% endifequal %}">Save Page</button>
+        <p>or <a href="{% url show page_tag %}">Cancel edit</a></p>
+    </div>
+</form>
+{% endblock %}
+
+{% block page_actions %}{% endblock %}
+
